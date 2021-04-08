@@ -18,7 +18,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = [
-            "customer", 
+            "customer",
             "plan_name",
             "price"
         ]
