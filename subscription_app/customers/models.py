@@ -16,6 +16,7 @@ class Customer(models.Model):
     #     return self.create(request)
 
 class Subscription(models.Model):
+    # One to one relationship w. Customer
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     plan_name = models.CharField(max_length=100, null=True)
     price = models.IntegerField(default=0, null=True)
@@ -24,6 +25,7 @@ class Subscription(models.Model):
         return self.plan_name
 
 class Gift(models.Model):
+    # Many to one relationship w. Customer gift_set
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     plan_name = models.CharField(max_length=100)
     price: models.IntegerField()
