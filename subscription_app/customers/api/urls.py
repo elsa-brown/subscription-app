@@ -1,7 +1,11 @@
 from django.urls import include, path
 
-from .views import ( CustomerViewSet )
+from .views import ( 
+    CustomerApiView,
+    CustomerDetailView
+)
 
 urlpatterns = [
-    path('', CustomerViewSet.as_view()),
+    path('', CustomerApiView.as_view()),
+    path('<int:customer_id>/', CustomerDetailView.as_view()),
 ]

@@ -13,3 +13,12 @@ class CustomerSerializer(serializers.ModelSerializer):
             "state",
             "postal_code"
         ]
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = [
+            "customer", 
+            "plan_name",
+            "price"
+        ]

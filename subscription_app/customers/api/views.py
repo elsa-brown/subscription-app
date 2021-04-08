@@ -5,18 +5,31 @@ from rest_framework import status
 from customers.models import Customer
 from .serializers import CustomerSerializer
 
-class CustomerViewSet(APIView):
+class CustomerApiView(APIView):
+    def get(self, request):
+        return Response("Add customer data in JSON format below, and click POST to add to database.")
     def post(self, request):
-        # data = {
-        #     'first_name': request.data.get('first_name'),
-        #     'last_name': request.data.get('last_name'),
-        #     'address_1': request.data.get('address_1'),
-        #     'address_2': request.data.get('address_2'),
-        #     'last_name': request.data.get('last_name'),
-        #     'last_name': request.data.get('last_name'),
-        # }
         serializer = CustomerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CustomerDetailView(APIView):
+    def get_object(self, customer_id):
+        # helper method
+        try:
+            return Customer.objects.get(id=customer_id)
+        except Customer.DoesNotExist:
+            return None
+
+    def get(self, request, customer_id):
+        customer = self.get_object(customer_id)
+        if not customer:
+            return Response(
+                {"Customer does not exist. Please try again."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        serializer = CustomerSerializer(customer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
